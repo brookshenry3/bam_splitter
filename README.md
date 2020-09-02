@@ -7,7 +7,7 @@ This python script uses [pysam](https://pysam.readthedocs.io/en/latest/#) to par
 Command line options:
 
  * -b : BAM file to subset, must be indexed using 'samtools index' beforehand in order for pysam to work properly
- * -d : The range of the deletion of interest in the format of "START-END"
+ * -d : The range of the deletion of interest in the format of "START-END" (Can be same value for single bp deletion)
  * -o : location/prefix to give output files
 
 Bam Splitter will return... 
@@ -18,13 +18,22 @@ Bam Splitter will return...
  * {OUTPUT}_deletions.bam : BAM file containing the reads that contain the deletion
  * {OUTPUT}_nodeletions.bam : BAM file containing the reads that do not contain the deletion
 
+## !Caveats!
+
+Currently BAM Splitter has no way to specify chromosome (hoping to add this option soon) so the user must narrow down their intial bam file to the region of interest using:
+
+    samtools view -b input.bam region_of_interest
+
+And subsequently index this as described in the "input" section.
+
+There has been very minimal testing done for this, hoping to add some tiny test bams in soon.
+
 ## Example Usage:
 
-    python3 bam_splitter.py -b INPUT.BAM -d 124213-12420 -o location/prefix
+    python3 bam_splitter.py -b input.bam -d 124213-12420 -o location/prefix
 
 ## To-Do:
  * Add in chromosome specification (currently must have BAM file narrowed down to region of interest)
- * Make it work on single bp deletions (currently only works on ranges)
- * Test!!
+ * Add testing data
 
  Happy to have contributions, suggestions, etc. 
